@@ -51,7 +51,7 @@ function ProductsPage() {
     });
   }, [items, query, cat]);
 
-  const onSave = (data: Omit<Product, "id" | "status" | "image">) => {
+  const onSave = (data: Omit<Product, "id" | "status">) => {
     if (editing) {
       setItems((prev) =>
         prev.map((p) =>
@@ -62,7 +62,7 @@ function ProductsPage() {
     } else {
       const id = `p${Date.now()}`;
       setItems((prev) => [
-        { id, image: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=200&q=80", status: deriveStatus(data.stock), ...data },
+        { id, status: deriveStatus(data.stock), ...data },
         ...prev,
       ]);
       toast.success("Product added");
@@ -165,18 +165,36 @@ function ProductsPage() {
   );
 }
 
+const PLACEHOLDER_IMG = "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=200&q=80";
+
 function ProductDialog({
   editing,
   onSave,
 }: {
   editing: Product | null;
-  onSave: (data: Omit<Product, "id" | "status" | "image">) => void;
+  onSave: (data: Omit<Product, "id" | "status">) => void;
 }) {
   const [name, setName] = useState(editing?.name ?? "");
   const [category, setCategory] = useState(editing?.category ?? categories[0].name);
   const [price, setPrice] = useState(editing?.price ?? 0);
   const [stock, setStock] = useState(editing?.stock ?? 0);
   const [unit, setUnit] = useState(editing?.unit ?? "pack");
+  const [image, setImage] = useState(editing?.image ?? "");
+
+  const onFile = (file: File | undefined) => {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please choose an image file");
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("Image must be under 2MB");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setImage(reader.result as string);
+    reader.readAsDataURL(file);
+  };
 
   return (
     <DialogContent>
@@ -184,6 +202,26 @@ function ProductDialog({
         <DialogTitle>{editing ? "Edit Product" : "Add Product"}</DialogTitle>
       </DialogHeader>
       <div className="grid gap-3 py-2">
+        <div className="grid gap-1.5">
+          <Label>Product Image</Label>
+          <div className="flex items-center gap-3">
+            <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-md border bg-muted">
+              {image ? (
+                <img src={image} alt="Preview" className="h-full w-full object-cover" />
+              ) : (
+                <span className="text-xs text-muted-foreground">No image</span>
+              )}
+            </div>
+            <div className="flex flex-1 flex-col gap-2">
+              <Input type="file" accept="image/*" onChange={(e) => onFile(e.target.files?.[0])} />
+              {image && (
+                <Button type="button" variant="ghost" size="sm" className="w-fit" onClick={() => setImage("")}>
+                  Remove image
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
         <div className="grid gap-1.5">
           <Label>Name</Label>
           <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Amul Milk 1L" />
@@ -213,7 +251,10 @@ function ProductDialog({
         </div>
       </div>
       <DialogFooter>
-        <Button onClick={() => onSave({ name, category, price, stock, unit })} disabled={!name}>
+        <Button
+          onClick={() => onSave({ name, category, price, stock, unit, image: image || PLACEHOLDER_IMG })}
+          disabled={!name}
+        >
           {editing ? "Save changes" : "Add product"}
         </Button>
       </DialogFooter>
