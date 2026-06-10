@@ -51,7 +51,7 @@ function ProductsPage() {
     });
   }, [items, query, cat]);
 
-  const onSave = (data: Omit<Product, "id" | "status" | "image">) => {
+  const onSave = (data: Omit<Product, "id" | "status">) => {
     if (editing) {
       setItems((prev) =>
         prev.map((p) =>
@@ -62,7 +62,7 @@ function ProductsPage() {
     } else {
       const id = `p${Date.now()}`;
       setItems((prev) => [
-        { id, image: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=200&q=80", status: deriveStatus(data.stock), ...data },
+        { id, status: deriveStatus(data.stock), ...data },
         ...prev,
       ]);
       toast.success("Product added");
