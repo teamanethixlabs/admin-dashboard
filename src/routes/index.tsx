@@ -114,33 +114,36 @@ function Dashboard() {
                 </div>
               </div>
 
-              <div className="flex h-52 items-end gap-3">
-                {revenueByDay.map((d, i) => {
-                  const pct = Math.max(8, Math.round((d.revenue / max) * 100));
-                  const isPeak = i === peakIdx;
-                  return (
-                    <div key={d.day} className="flex flex-1 flex-col items-center gap-2">
-                      <div className="flex w-full flex-1 items-end">
+              <div className="relative">
+                <div className="flex h-52 items-end gap-3">
+                  {revenueByDay.map((d, i) => {
+                    const px = Math.max(16, Math.round((d.revenue / max) * 192));
+                    const isPeak = i === peakIdx;
+                    return (
+                      <div key={d.day} className="flex flex-1 flex-col items-center gap-2">
                         <div
                           className={`w-full rounded-t-md transition-colors ${
-                            isPeak
-                              ? "bg-primary"
-                              : "bg-muted hover:bg-primary/80"
+                            isPeak ? "bg-primary" : "bg-muted hover:bg-primary/70"
                           }`}
-                          style={{ height: `${pct}%` }}
+                          style={{ height: `${px}px` }}
                           title={inr(d.revenue)}
                         />
                       </div>
-                      <span
-                        className={`text-[11px] ${
-                          isPeak ? "font-semibold text-foreground" : "text-muted-foreground"
-                        }`}
-                      >
-                        {d.day}
-                      </span>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+                <div className="mt-2 flex gap-3">
+                  {revenueByDay.map((d, i) => (
+                    <span
+                      key={d.day}
+                      className={`flex-1 text-center text-[11px] ${
+                        i === peakIdx ? "font-semibold text-foreground" : "text-muted-foreground"
+                      }`}
+                    >
+                      {d.day}
+                    </span>
+                  ))}
+                </div>
               </div>
             </CardContent>
           </Card>
