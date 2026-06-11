@@ -6,7 +6,7 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import {
-  Package, ShoppingCart, Clock, CheckCircle2, IndianRupee, ArrowUpRight, TrendingUp,
+  Package, ShoppingCart, Clock, CheckCircle2, ArrowUpRight, TrendingUp, ArrowRight,
 } from "lucide-react";
 import { AdminHeader } from "@/components/admin-header";
 import { stats, orders, revenueByDay, inr } from "@/lib/mock-data";
@@ -23,109 +23,169 @@ export const Route = createFileRoute("/")({
 });
 
 const statCards = [
-  { label: "Total Products", value: stats.totalProducts.toString(), icon: Package, tone: "bg-blue-500/10 text-blue-600", delta: "+12 this week" },
-  { label: "Total Orders", value: stats.totalOrders.toLocaleString(), icon: ShoppingCart, tone: "bg-violet-500/10 text-violet-600", delta: "+86 this week" },
-  { label: "Pending Orders", value: stats.pendingOrders.toString(), icon: Clock, tone: "bg-amber-500/10 text-amber-600", delta: "Needs attention" },
-  { label: "Delivered Orders", value: stats.deliveredOrders.toLocaleString(), icon: CheckCircle2, tone: "bg-emerald-500/10 text-emerald-600", delta: "+72 this week" },
+  { label: "Total Products", value: stats.totalProducts.toString(), icon: Package, tone: "bg-blue-50 text-blue-600", delta: "+12 this week", positive: true },
+  { label: "Total Orders", value: stats.totalOrders.toLocaleString(), icon: ShoppingCart, tone: "bg-violet-50 text-violet-600", delta: "+86 this week", positive: true },
+  { label: "Pending Orders", value: stats.pendingOrders.toString(), icon: Clock, tone: "bg-amber-50 text-amber-600", delta: "Needs attention", positive: false },
+  { label: "Delivered Orders", value: stats.deliveredOrders.toLocaleString(), icon: CheckCircle2, tone: "bg-emerald-50 text-emerald-600", delta: "+72 this week", positive: true },
 ];
 
 function Dashboard() {
   const max = Math.max(...revenueByDay.map((d) => d.revenue));
   const recent = orders.slice(0, 6);
+  const peakIdx = revenueByDay.findIndex((d) => d.revenue === max);
 
   return (
     <>
       <AdminHeader title="Dashboard" subtitle="Today's overview at a glance" />
-      <main className="flex-1 space-y-6 p-4 md:p-6">
+      <main className="flex-1 space-y-6 p-4 md:p-8">
+        {/* Page intro */}
+        <section className="flex flex-col gap-1">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+            Overview
+          </p>
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <h2 className="text-2xl font-semibold tracking-tight">Good morning, Ramesh</h2>
+            <p className="text-sm text-muted-foreground">
+              Here's what's happening at FreshMart today.
+            </p>
+          </div>
+        </section>
+
+        {/* KPI cards */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {statCards.map((s) => (
-            <Card key={s.label} className="border-border/60">
+            <Card key={s.label} className="border-border/70 shadow-none transition-shadow hover:shadow-sm">
               <CardContent className="p-5">
                 <div className="flex items-start justify-between">
                   <div className="min-w-0">
-                    <p className="text-sm text-muted-foreground">{s.label}</p>
-                    <p className="mt-2 text-2xl font-semibold tracking-tight">{s.value}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{s.delta}</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                      {s.label}
+                    </p>
+                    <p className="mt-3 text-[28px] font-semibold leading-none tracking-tight">
+                      {s.value}
+                    </p>
                   </div>
-                  <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-lg ${s.tone}`}>
-                    <s.icon className="h-5 w-5" />
+                  <div className={`grid h-9 w-9 shrink-0 place-items-center rounded-md ${s.tone}`}>
+                    <s.icon className="h-[18px] w-[18px]" strokeWidth={2} />
                   </div>
                 </div>
+                <p className={`mt-3 text-[11px] font-medium ${s.positive ? "text-emerald-600" : "text-amber-600"}`}>
+                  {s.delta}
+                </p>
               </CardContent>
             </Card>
           ))}
         </div>
 
+        {/* Revenue + Quick actions */}
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <Card className="lg:col-span-2">
-            <CardHeader className="flex flex-row items-start justify-between space-y-0">
+          <Card className="border-border/70 shadow-none lg:col-span-2">
+            <CardHeader className="flex flex-row items-start justify-between space-y-0 border-b pb-4">
               <div>
-                <CardTitle className="text-base">Revenue Summary</CardTitle>
-                <p className="text-sm text-muted-foreground">Last 7 days</p>
+                <CardTitle className="text-[15px] font-semibold tracking-tight">
+                  Revenue Summary
+                </CardTitle>
+                <p className="mt-0.5 text-xs text-muted-foreground">Last 7 days</p>
               </div>
-              <Badge variant="secondary" className="gap-1">
+              <Badge
+                variant="outline"
+                className="gap-1 rounded-full border-emerald-200/60 bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700"
+              >
                 <TrendingUp className="h-3 w-3" /> +18.4%
               </Badge>
             </CardHeader>
-            <CardContent>
-              <div className="mb-4 flex items-baseline gap-2">
-                <IndianRupee className="h-5 w-5 text-muted-foreground" />
-                <span className="text-3xl font-semibold tracking-tight">
-                  {stats.revenue.toLocaleString("en-IN")}
-                </span>
-                <span className="text-sm text-muted-foreground">this month</span>
+            <CardContent className="pt-6">
+              <div className="mb-6 flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                    This month
+                  </p>
+                  <p className="mt-1 text-3xl font-semibold tracking-tight">
+                    ₹{stats.revenue.toLocaleString("en-IN")}
+                  </p>
+                </div>
+                <div className="hidden text-right sm:block">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                    Peak day
+                  </p>
+                  <p className="mt-1 text-sm font-medium">
+                    {revenueByDay[peakIdx]?.day} • {inr(max)}
+                  </p>
+                </div>
               </div>
-              <div className="flex h-48 items-end gap-3">
-                {revenueByDay.map((d) => (
-                  <div key={d.day} className="flex flex-1 flex-col items-center gap-2">
-                    <div className="flex w-full flex-1 items-end">
-                      <div
-                        className="w-full rounded-t-md bg-gradient-to-t from-primary/80 to-primary/40 transition-all hover:from-primary hover:to-primary/60"
-                        style={{ height: `${(d.revenue / max) * 100}%` }}
-                        title={inr(d.revenue)}
-                      />
+
+              <div className="flex h-52 items-end gap-3">
+                {revenueByDay.map((d, i) => {
+                  const pct = Math.max(8, Math.round((d.revenue / max) * 100));
+                  const isPeak = i === peakIdx;
+                  return (
+                    <div key={d.day} className="flex flex-1 flex-col items-center gap-2">
+                      <div className="flex w-full flex-1 items-end">
+                        <div
+                          className={`w-full rounded-t-md transition-colors ${
+                            isPeak
+                              ? "bg-primary"
+                              : "bg-muted hover:bg-primary/80"
+                          }`}
+                          style={{ height: `${pct}%` }}
+                          title={inr(d.revenue)}
+                        />
+                      </div>
+                      <span
+                        className={`text-[11px] ${
+                          isPeak ? "font-semibold text-foreground" : "text-muted-foreground"
+                        }`}
+                      >
+                        {d.day}
+                      </span>
                     </div>
-                    <span className="text-xs text-muted-foreground">{d.day}</span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Quick Actions</CardTitle>
+          <Card className="border-border/70 shadow-none">
+            <CardHeader className="border-b pb-4">
+              <CardTitle className="text-[15px] font-semibold tracking-tight">
+                Quick Actions
+              </CardTitle>
+              <p className="mt-0.5 text-xs text-muted-foreground">Jump to common tasks</p>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <Link to="/products" className="block">
-                <Button variant="outline" className="w-full justify-between">
-                  Manage Products <ArrowUpRight className="h-4 w-4" />
-                </Button>
-              </Link>
-              <Link to="/orders" className="block">
-                <Button variant="outline" className="w-full justify-between">
-                  View Orders <ArrowUpRight className="h-4 w-4" />
-                </Button>
-              </Link>
-              <Link to="/customers" className="block">
-                <Button variant="outline" className="w-full justify-between">
-                  Customers <ArrowUpRight className="h-4 w-4" />
-                </Button>
-              </Link>
-              <Link to="/categories" className="block">
-                <Button variant="outline" className="w-full justify-between">
-                  Categories <ArrowUpRight className="h-4 w-4" />
-                </Button>
-              </Link>
+            <CardContent className="space-y-1.5 pt-4">
+              {[
+                { to: "/products", label: "Manage Products" },
+                { to: "/orders", label: "View Orders" },
+                { to: "/customers", label: "Customers" },
+                { to: "/categories", label: "Categories" },
+              ].map((a) => (
+                <Link key={a.to} to={a.to} className="block">
+                  <Button
+                    variant="ghost"
+                    className="group h-11 w-full justify-between rounded-md border border-transparent px-3 text-[13px] font-medium hover:border-border hover:bg-muted/60"
+                  >
+                    <span>{a.label}</span>
+                    <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+                  </Button>
+                </Link>
+              ))}
             </CardContent>
           </Card>
         </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-base">Recent Orders</CardTitle>
+        {/* Recent orders */}
+        <Card className="border-border/70 shadow-none">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b pb-4">
+            <div>
+              <CardTitle className="text-[15px] font-semibold tracking-tight">
+                Recent Orders
+              </CardTitle>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Latest activity from your store
+              </p>
+            </div>
             <Link to="/orders">
-              <Button variant="ghost" size="sm" className="gap-1">
+              <Button variant="ghost" size="sm" className="gap-1 text-[13px]">
                 View all <ArrowUpRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -133,24 +193,42 @@ function Dashboard() {
           <CardContent className="p-0">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Order ID</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Items</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="h-11 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                    Order ID
+                  </TableHead>
+                  <TableHead className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                    Customer
+                  </TableHead>
+                  <TableHead className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                    Phone
+                  </TableHead>
+                  <TableHead className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                    Items
+                  </TableHead>
+                  <TableHead className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                    Amount
+                  </TableHead>
+                  <TableHead className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                    Status
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {recent.map((o) => (
-                  <TableRow key={o.id}>
-                    <TableCell className="font-medium">{o.id}</TableCell>
-                    <TableCell>{o.customerName}</TableCell>
-                    <TableCell className="text-muted-foreground">{o.phone}</TableCell>
-                    <TableCell>{o.items.length} items</TableCell>
-                    <TableCell className="font-medium">{inr(o.amount)}</TableCell>
-                    <TableCell><OrderStatusBadge status={o.status} /></TableCell>
+                  <TableRow key={o.id} className="border-b-border/60">
+                    <TableCell className="py-3.5 font-mono text-[12px] font-medium text-foreground">
+                      {o.id}
+                    </TableCell>
+                    <TableCell className="text-[13px] font-medium">{o.customerName}</TableCell>
+                    <TableCell className="text-[13px] text-muted-foreground">{o.phone}</TableCell>
+                    <TableCell className="text-[13px] text-muted-foreground">
+                      {o.items.length} items
+                    </TableCell>
+                    <TableCell className="text-[13px] font-semibold">{inr(o.amount)}</TableCell>
+                    <TableCell>
+                      <OrderStatusBadge status={o.status} />
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
