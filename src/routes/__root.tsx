@@ -80,14 +80,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "FreshMart — Admin Dashboard" },
+      { name: "description", content: "Manage products, orders, customers and revenue for your grocery store." },
+      { name: "author", content: "FreshMart" },
+      { property: "og:title", content: "FreshMart — Admin Dashboard" },
+      { property: "og:description", content: "Manage products, orders, customers and revenue for your grocery store." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
