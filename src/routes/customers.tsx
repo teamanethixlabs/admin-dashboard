@@ -11,7 +11,7 @@ import {
 import { customers, inr } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/customers")({
-  head: () => ({ meta: [{ title: "Customers — FreshMart Admin" }] }),
+  head: () => ({ meta: [{ title: "Customers — Queens Departmental Store Admin" }] }),
   component: CustomersPage,
 });
 

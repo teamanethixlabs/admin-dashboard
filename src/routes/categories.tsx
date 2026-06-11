@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { categories as seed, type Category } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/categories")({
-  head: () => ({ meta: [{ title: "Categories — FreshMart Admin" }] }),
+  head: () => ({ meta: [{ title: "Categories — Queens Departmental Store Admin" }] }),
   component: CategoriesPage,
 });
 

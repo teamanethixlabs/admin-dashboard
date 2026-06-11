@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import { products as seedProducts, categories, type Product, type ProductStatus } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/products")({
-  head: () => ({ meta: [{ title: "Products — FreshMart Admin" }] }),
+  head: () => ({ meta: [{ title: "Products — Queens Departmental Store Admin" }] }),
   component: ProductsPage,
 });
 

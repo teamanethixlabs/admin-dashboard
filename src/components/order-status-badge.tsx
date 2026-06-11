@@ -21,9 +21,9 @@ export function OrderStatusBadge({ status }: { status: OrderStatus }) {
   return (
     <Badge
       variant="outline"
-      className={`gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium ${styles[status]}`}
+      className={`gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${styles[status]} transition-colors`}
     >
-      <span className={`h-1.5 w-1.5 rounded-full ${dotStyles[status]}`} />
+      <span className={`h-1.5 w-1.5 rounded-full ${dotStyles[status]} ${status === "Pending" ? "animate-pulse" : ""}`} />
       {status}
     </Badge>
   );

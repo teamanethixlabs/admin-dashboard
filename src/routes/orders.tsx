@@ -22,7 +22,7 @@ import {
 } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/orders")({
-  head: () => ({ meta: [{ title: "Orders — FreshMart Admin" }] }),
+  head: () => ({ meta: [{ title: "Orders — Queens Departmental Store Admin" }] }),
   component: OrdersPage,
 });
 

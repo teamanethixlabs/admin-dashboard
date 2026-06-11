@@ -10,12 +10,12 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/settings")({
-  head: () => ({ meta: [{ title: "Settings — FreshMart Admin" }] }),
+  head: () => ({ meta: [{ title: "Settings — Queens Departmental Store Admin" }] }),
   component: SettingsPage,
 });
 
 function SettingsPage() {
-  const [name, setName] = useState("FreshMart Departmental Store");
+  const [name, setName] = useState("Queens Departmental Store");
   const [address, setAddress] = useState("Shop No. 14, MG Road, Pune, Maharashtra 411001");
   const [contact, setContact] = useState("+91 98765 00000");
 

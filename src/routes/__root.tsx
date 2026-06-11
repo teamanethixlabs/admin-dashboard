@@ -7,10 +7,9 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/admin-sidebar";
 import { Toaster } from "@/components/ui/sonner";
@@ -40,9 +39,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -80,11 +76,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "FreshMart — Admin Dashboard" },
-      { name: "description", content: "Manage products, orders, customers and revenue for your grocery store." },
-      { name: "author", content: "FreshMart" },
-      { property: "og:title", content: "FreshMart — Admin Dashboard" },
-      { property: "og:description", content: "Manage products, orders, customers and revenue for your grocery store." },
+      { title: "Queens Departmental Store Admin" },
+      { name: "description", content: "Manage products, orders, customers, and revenue for Queens Departmental Store." },
+      { name: "author", content: "Anethix Labs" },
+      { property: "og:title", content: "Queens Departmental Store Admin" },
+      { property: "og:description", content: "Manage products, orders, customers, and revenue for Queens Departmental Store." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

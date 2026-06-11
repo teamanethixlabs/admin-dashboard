@@ -137,6 +137,8 @@ export const stats = {
   pendingOrders: 28,
   deliveredOrders: 1210,
   revenue: 482350,
+  avgOrderValue: 376,
+  returningCustomers: 68,
 };
 
 export const revenueByDay = [
@@ -147,6 +149,40 @@ export const revenueByDay = [
   { day: "Fri", revenue: 21200 },
   { day: "Sat", revenue: 26400 },
   { day: "Sun", revenue: 22800 },
+];
+
+export const revenueByMonth = [
+  { month: "Jan", revenue: 324000, orders: 860 },
+  { month: "Feb", revenue: 298000, orders: 790 },
+  { month: "Mar", revenue: 356000, orders: 940 },
+  { month: "Apr", revenue: 412000, orders: 1080 },
+  { month: "May", revenue: 445000, orders: 1170 },
+  { month: "Jun", revenue: 482350, orders: 1284 },
+];
+
+export const categoryRevenue = [
+  { name: "Fruits & Veg", value: 128400, color: "#10b981" },
+  { name: "Dairy & Eggs", value: 86200, color: "#3b82f6" },
+  { name: "Staples", value: 96800, color: "#f59e0b" },
+  { name: "Beverages", value: 62400, color: "#8b5cf6" },
+  { name: "Snacks", value: 54200, color: "#ec4899" },
+  { name: "Others", value: 54350, color: "#6b7280" },
+];
+
+export const topSellingProducts = [
+  { name: "Amul Milk 1L", sold: 342, revenue: 23256, trend: 12.4 },
+  { name: "Bananas (1 dozen)", sold: 289, revenue: 17340, trend: 8.2 },
+  { name: "Basmati Rice 5kg", sold: 156, revenue: 101400, trend: -2.1 },
+  { name: "Brown Bread", sold: 234, revenue: 12870, trend: 15.6 },
+  { name: "Farm Eggs (12 pcs)", sold: 198, revenue: 17820, trend: 5.8 },
+];
+
+export const inventoryAlerts = [
+  { product: "Tomatoes (1 kg)", stock: 8, threshold: 20, status: "Low Stock" as ProductStatus },
+  { product: "Potatoes (1 kg)", stock: 0, threshold: 50, status: "Out of Stock" as ProductStatus },
+  { product: "Whole Wheat Buns", stock: 6, threshold: 15, status: "Low Stock" as ProductStatus },
+  { product: "Haldiram's Bhujia 200g", stock: 4, threshold: 20, status: "Low Stock" as ProductStatus },
+  { product: "Colgate MaxFresh 150g", stock: 0, threshold: 30, status: "Out of Stock" as ProductStatus },
 ];
 
 export const orderStatuses: OrderStatus[] = ["Pending", "Confirmed", "Packed", "Out for Delivery", "Delivered"];
