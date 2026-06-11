@@ -127,7 +127,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <SidebarProvider>
-        <div className="flex min-h-screen w-full bg-muted/30">
+        <div className="flex min-h-screen w-full bg-background">
           <AdminSidebar />
           <div className="flex min-w-0 flex-1 flex-col">
             <Outlet />
