@@ -4,12 +4,15 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
 
+// @ts-ignore
+import { nitro } from "nitro/vite";
+
 export default defineConfig({
   plugins: [
     tailwindcss(),
     tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tanstackStart({
-      server: { entry: "server" },
+      server: { entry: "server" }, // Notice 'preset' is gone
       importProtection: {
         behavior: "error",
         client: {
@@ -18,6 +21,7 @@ export default defineConfig({
         },
       },
     }),
+    nitro(), // Nitro is now handling the Vercel build output
     react(),
   ],
   resolve: {
